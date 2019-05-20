@@ -58,6 +58,12 @@ class HTTPConnection(Mapping):
         return self._headers
 
     @property
+    def proxy_is_secure(self) -> bool:
+        if not hasattr(self, "_proxy_is_secure"):
+            self._proxy_is_secure = self.headers.get("X-Forwarded-Proto") in ("https", "wss")
+        return self._proxy_is_secure
+
+    @property
     def query_params(self) -> QueryParams:
         if not hasattr(self, "_query_params"):
             self._query_params = QueryParams(self._scope["query_string"])
@@ -115,7 +121,7 @@ class HTTPConnection(Mapping):
     def url_for(self, name: str, **path_params: typing.Any) -> str:
         router = self._scope["router"]
         url_path = router.url_path_for(name, **path_params)
-        return url_path.make_absolute_url(base_url=self.url)
+        return url_path.make_absolute_url(base_url=self.url, proxy_is_secure=self.proxy_is_secure)
 
 
 async def empty_receive() -> Message:

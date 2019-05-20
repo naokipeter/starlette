@@ -148,14 +148,14 @@ class URLPath(str):
         self.protocol = protocol
         self.host = host
 
-    def make_absolute_url(self, base_url: typing.Union[str, URL]) -> str:
+    def make_absolute_url(self, base_url: typing.Union[str, URL], proxy_is_secure: bool = False) -> str:
         if isinstance(base_url, str):
             base_url = URL(base_url)
         if self.protocol:
             scheme = {
                 "http": {True: "https", False: "http"},
                 "websocket": {True: "wss", False: "ws"},
-            }[self.protocol][base_url.is_secure]
+            }[self.protocol][base_url.is_secure or proxy_is_secure]
         else:
             scheme = base_url.scheme
 
