@@ -35,10 +35,10 @@ def get_packages(package):
 
 
 setup(
-    name="starlette",
+    name="starlette_naokipeter",
     python_requires=">=3.6",
     version=get_version("starlette"),
-    url="https://github.com/encode/starlette",
+    url="https://github.com/naokipeter/starlette",
     license="BSD",
     description="The little ASGI library that shines.",
     long_description=get_long_description(),
